@@ -35,8 +35,8 @@ public class Matrix extends MatheMatrix {
 
 			return 0;
 		}
-
-		return signum(y, x) * det(submatrix(A, y, x));
+		
+		return signum(y, x) * det(submatrix(A, y, x)); /* sgn_yx * minor_yx */
 	}
 
 	public static double det(Matrix A) {
@@ -47,16 +47,17 @@ public class Matrix extends MatheMatrix {
 			return A.get(0, 0);
 
 		} else if (A.rowLength() == 2) {
-			double a = A.get(0, 0), b = A.get(0, 1), c = A.get(1, 0), d = A.get(1, 1);
+			double a = A.get(0, 0), b = A.get(0, 1), 
+				   c = A.get(1, 0), d = A.get(1, 1);
 
 			return a * d - b * c;
 		}
 
-		int x = 0;
+		int y = 0;
 		double det = 0;
 
-		for (int y = 0; y < A.rowLength(); y++) {
-			det += cofactor(A, y, x);
+		for (int x = 0; x < A.columnLength(); x++) {
+			det += A.get(y,x) * cofactor(A, y, x);
 		}
 
 		return det;
@@ -68,13 +69,15 @@ public class Matrix extends MatheMatrix {
 		}
 
 		double[][] Amn = new double[A.rowLength() - 1][A.columnLength() - 1];
-		int y_shifter = 0, x_shifter = 0;
-
+		
+		int y_shifter = 0;
 		for (int y = 0; y < A.rowLength(); y++) {
+				
 			if (y == y_axis) {
 				y_shifter--;
 
-			} else {
+			} else {				
+				int x_shifter = 0;
 				for (int x = 0; x < A.columnLength(); x++) {
 					if (x == x_axis) {
 						x_shifter--;
@@ -158,7 +161,6 @@ public class Matrix extends MatheMatrix {
 		}
 
 		double detA = det(this);
-
 		Matrix cofactored = map((y, x) -> cofactor(this, y, x));
 		return cofactored.transpose().multiply(1 / detA);
 	}
