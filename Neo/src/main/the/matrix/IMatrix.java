@@ -1,18 +1,26 @@
 package main.the.matrix;
 
-public interface IMatrix{
-	public int m();
-	public int n();
-	public boolean invertible();
-	public IMatrix x(IMatrix B);
-	public IMatrix x(double r);
-	public IMatrix I();
-	public IMatrix plus(IMatrix B);
-	public IMatrix minus(IMatrix B);
+public interface IMatrix {
+	public int rowLength();
+	public int columnLength();
+	
+	public boolean isInvertible();
+	public boolean isSquare();
+	public boolean equalSized(IMatrix B);
+	
+	public Matrix multiply(IMatrix B);
+	public Matrix multiply(double r);
+	public Matrix add(IMatrix B);
+	public Matrix subtract(IMatrix B);
+	
+	public Matrix inverse();
+	public Matrix transpose();
+	
 	public double get(int y, int x);
 	public void set(int y, int x, double v);
 	public boolean within(int y, int x);
-	public IMatrix copy();
-	public boolean square();
-	public double[][] array();
+	
+	public Matrix copy();
+	
+	public double[][] toArray();
 }
